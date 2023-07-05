@@ -37,7 +37,10 @@ function! codeium#CompletionText() abort
 endfunction
 
 function! codeium#Accept() abort
-  let default = get(g:, 'codeium_tab_fallback', pumvisible() ? "\<C-N>" : "\t")
+  let default = get(g:, 'codeium_tab_fallback',
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh())
 
   if mode() !~# '^[iR]' || !exists('b:_codeium_completions')
     return default
